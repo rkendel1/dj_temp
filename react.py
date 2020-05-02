@@ -9,7 +9,6 @@ MASTER_FILES_PATH = os.path.join(
     'react'
 )
 PROJECT_NAME = input('Project name: ')
-# PROJECT_NAME = 'reactproject'
 VENV_NAME = 'venv'
 REQUIREMENTS_FILE = 'requirements.txt'
 CWD_PATH = os.getcwd()
@@ -37,7 +36,7 @@ project_name
 '''
 
 os.mkdir(os.path.join(CWD_PATH, PROJECT_NAME))
-CWD_PATH =  os.path.join(CWD_PATH, PROJECT_NAME)
+CWD_PATH = os.path.join(CWD_PATH, PROJECT_NAME)
 os.chdir(CWD_PATH)
 
 '''
@@ -59,23 +58,24 @@ copyfile(
 )
 os.system(f'virtualenv {VENV_NAME}')
 subprocess.call([
-    os.path.join(CWD_PATH,f'{VENV_NAME}/Scripts/pip.exe'),
+    os.path.join(CWD_PATH, f'{VENV_NAME}/Scripts/pip.exe'),
     'install', '-r', REQUIREMENTS_FILE
 ])
 
 subprocess.call([
-    os.path.join(CWD_PATH,f'{VENV_NAME}/Scripts/django-admin.exe'),
+    os.path.join(CWD_PATH, f'{VENV_NAME}/Scripts/django-admin.exe'),
     'startproject', DEFAULT_APP_NAME
 ])
 os.chdir(os.path.join(CWD_PATH, DEFAULT_APP_NAME))
 subprocess.call([
-    os.path.join(CWD_PATH,f'{VENV_NAME}/Scripts/django-admin.exe'),
+    os.path.join(CWD_PATH, f'{VENV_NAME}/Scripts/django-admin.exe'),
     'startapp', DEFAULT_FRONTEND_APP_NAME
 ])
 
-#add django-rest to installed apps
+# add django-rest to installed apps
 settings_file_path = os.path.join(CWD_PATH, DEFAULT_APP_NAME, DEFAULT_APP_NAME, 'settings.py')
-edit_django_settings(settings_file_path, {
+env_vars = edit_django_settings(settings_file_path, {
+    'set_up_environ': True,
     'INSTALLED_APPS': {
         'add': [
             'rest_framework',
@@ -84,29 +84,36 @@ edit_django_settings(settings_file_path, {
     }
 })
 
-#add view, urls.py and template, static, src
+#create .env file
+with open(os.path.join(CWD_PATH,'.env'), 'w') as file:
+    for var,value in env_vars.items():
+        file.write(
+            f'{var}={value}\n'
+        )
+
+# add view, urls.py and template, static, src
 copytree(
-    os.path.join(MASTER_FILES_PATH,'django','frontend','src'),
-    os.path.join(CWD_PATH,'app','frontend','src')
+    os.path.join(MASTER_FILES_PATH, 'django', 'frontend', 'src'),
+    os.path.join(CWD_PATH, 'app', 'frontend', 'src')
 )
 copytree(
-    os.path.join(MASTER_FILES_PATH,'django','frontend','static'),
-    os.path.join(CWD_PATH,'app','frontend','static')
+    os.path.join(MASTER_FILES_PATH, 'django', 'frontend', 'static'),
+    os.path.join(CWD_PATH, 'app', 'frontend', 'static')
 )
 copytree(
-    os.path.join(MASTER_FILES_PATH,'django','frontend','templates'),
-    os.path.join(CWD_PATH,'app','frontend','templates')
+    os.path.join(MASTER_FILES_PATH, 'django', 'frontend', 'templates'),
+    os.path.join(CWD_PATH, 'app', 'frontend', 'templates')
 )
 copyfile(
-    os.path.join(MASTER_FILES_PATH, 'django','app','urls.py'),
+    os.path.join(MASTER_FILES_PATH, 'django', 'app', 'urls.py'),
     os.path.join(CWD_PATH, 'app', 'app', 'urls.py'),
 )
 copyfile(
-    os.path.join(MASTER_FILES_PATH, 'django','frontend','urls.py'),
+    os.path.join(MASTER_FILES_PATH, 'django', 'frontend', 'urls.py'),
     os.path.join(CWD_PATH, 'app', 'frontend', 'urls.py'),
 )
 copyfile(
-    os.path.join(MASTER_FILES_PATH, 'django','frontend','views.py'),
+    os.path.join(MASTER_FILES_PATH, 'django', 'frontend', 'views.py'),
     os.path.join(CWD_PATH, 'app', 'frontend', 'views.py'),
 )
 '''
@@ -119,7 +126,8 @@ copyfile(
 os.chdir(CWD_PATH)
 os.system('npm init -y')
 os.system('npm i webpack webpack-cli --save-dev')
-os.system('npm i @babel/core babel-loader @babel/preset-env @babel/preset-react babel-plugin-transform-class-properties @babel/plugin-transform-runtime --save-dev')
+os.system(
+    'npm i @babel/core babel-loader @babel/preset-env @babel/preset-react babel-plugin-transform-class-properties @babel/plugin-transform-runtime --save-dev')
 os.system('npm i react react-dom prop-types --save-dev')
 
 # add scripts to package.json
@@ -161,4 +169,3 @@ copyfile(
 os.system('git init')
 os.system('git add *')
 os.system('git commit -m "initial commit"')
-

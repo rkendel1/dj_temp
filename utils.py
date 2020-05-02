@@ -1,7 +1,7 @@
 import fileinput
 
 
-def edit_django_settings(filepath, settings_dict):
+def handle_installed_apps(filepath, settings_dict):
     with fileinput.input(filepath, inplace=True) as f:
         is_installed_apps = False
         for line in f:
@@ -9,9 +9,45 @@ def edit_django_settings(filepath, settings_dict):
                 is_installed_apps = True
             if is_installed_apps and ']' in line:
                 is_installed_apps = False
-                for app in settings_dict['INSTALLED_APPS']['add']:
+                for app in settings_dict['add']:
                     print(f'\t\'{app}\',\n', end='')
             print(line, end='')
+
+
+def set_up_environ(filepath):
+    env_vars = {}
+    with fileinput.input(filepath, inplace=True) as f:
+        for line in f:
+            if 'import os' in line:
+                print(line, end='')
+                print('import environ')
+                print('\n')
+                print('env = environ.Env(\n\tDEBUG=(bool,False),\n\tALLOWED_HOSTS=(list,[*])\n)')
+                print('environ.Env.read_env("../.env")')
+                continue
+            if 'SECRET_KEY' in line:
+                env_vars['SECRET_KEY'] = line[line.find('\''):][1:-2]
+                print('SECRET_KEY=env.str("SECRET_KEY")')
+                continue
+            if 'DEBUG' in line:
+                env_vars['DEBUG'] = 'True'
+                print('DEBUG=env.bool("DEBUG")')
+                continue
+            if 'ALLOWED_HOSTS' in line:
+                env_vars['ALLOWED_HOSTS'] = '*'
+                print('ALLOWED_HOSTS=env.list("ALLOWED_HOSTS")')
+                continue
+            print(line, end='')
+    return env_vars
+
+
+def edit_django_settings(filepath, settings_dict):
+    env_vars = {}
+    if settings_dict['set_up_environ']:
+        env_vars = set_up_environ(filepath)
+    if 'INSTALLED_APPS' in settings_dict:
+        handle_installed_apps(filepath, settings_dict['INSTALLED_APPS'])
+    return env_vars
 
 
 def edit_packagejson(filepath, settings_dict):
