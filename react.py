@@ -76,6 +76,7 @@ subprocess.call([
 settings_file_path = os.path.join(CWD_PATH, DEFAULT_APP_NAME, DEFAULT_APP_NAME, 'settings.py')
 env_vars = edit_django_settings(settings_file_path, {
     'set_up_environ': True,
+    'static_root': True,
     'INSTALLED_APPS': {
         'add': [
             'rest_framework',

@@ -41,10 +41,17 @@ def set_up_environ(filepath):
     return env_vars
 
 
+def add_static_root(filepath):
+    with open(filepath, mode='a') as f:
+        f.write('STATIC_ROOT = os.path.join(BASE_DIR, "static_col")')
+
+
 def edit_django_settings(filepath, settings_dict):
     env_vars = {}
     if settings_dict['set_up_environ']:
         env_vars = set_up_environ(filepath)
+    if settings_dict['static_root']:
+        env_vars = add_static_root(filepath)
     if 'INSTALLED_APPS' in settings_dict:
         handle_installed_apps(filepath, settings_dict['INSTALLED_APPS'])
     return env_vars
