@@ -22,7 +22,7 @@ def set_up_environ(filepath):
                 print(line, end='')
                 print('import environ')
                 print('\n')
-                print('env = environ.Env(\n\tDEBUG=(bool,False),\n\tALLOWED_HOSTS=(list,[*])\n)')
+                print('env = environ.Env(\n\tDEBUG=(bool,False),\n\tALLOWED_HOSTS=(list,["*"])\n)')
                 print('environ.Env.read_env("../.env")')
                 continue
             if 'SECRET_KEY' in line:
@@ -51,7 +51,7 @@ def edit_django_settings(filepath, settings_dict):
     if settings_dict['set_up_environ']:
         env_vars = set_up_environ(filepath)
     if settings_dict['static_root']:
-        env_vars = add_static_root(filepath)
+        add_static_root(filepath)
     if 'INSTALLED_APPS' in settings_dict:
         handle_installed_apps(filepath, settings_dict['INSTALLED_APPS'])
     return env_vars

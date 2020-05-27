@@ -1,6 +1,6 @@
 module.exports = {
     entry: {
-        homepage: './app/frontend/src/homepage.js'
+        homepage: './app/frontend/src/Homepage.js'
     },
     output:{
         filename: '[name].js',

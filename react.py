@@ -1,4 +1,6 @@
+#!./venv/bin/python
 import os
+import platform
 from shutil import copyfile, copytree
 import subprocess
 from utils import edit_django_settings, edit_packagejson
@@ -15,6 +17,15 @@ CWD_PATH = os.getcwd()
 
 DEFAULT_APP_NAME = 'app'
 DEFAULT_FRONTEND_APP_NAME = 'frontend'
+
+if platform.system() == 'Linux':
+    SCRIPTS_PATH = 'bin'
+    SCRIPTS_SUFFIX = ''
+elif platform.system() == 'Windows':
+    SCRIPTS_PATH = 'Scripts'
+    SCRIPTS_SUFFIX = '.exe'
+
+VENV_BIN_PATH = f"{VENV_NAME}/{SCRIPTS_PATH}"
 
 '''
 +++ folder structure
@@ -58,17 +69,17 @@ copyfile(
 )
 os.system(f'virtualenv {VENV_NAME}')
 subprocess.call([
-    os.path.join(CWD_PATH, f'{VENV_NAME}/Scripts/pip.exe'),
+    os.path.join(CWD_PATH, f'{VENV_BIN_PATH}/pip{SCRIPTS_SUFFIX}'),
     'install', '-r', REQUIREMENTS_FILE
 ])
 
 subprocess.call([
-    os.path.join(CWD_PATH, f'{VENV_NAME}/Scripts/django-admin.exe'),
+    os.path.join(CWD_PATH, f'{VENV_BIN_PATH}/django-admin{SCRIPTS_SUFFIX}'),
     'startproject', DEFAULT_APP_NAME
 ])
 os.chdir(os.path.join(CWD_PATH, DEFAULT_APP_NAME))
 subprocess.call([
-    os.path.join(CWD_PATH, f'{VENV_NAME}/Scripts/django-admin.exe'),
+    os.path.join(CWD_PATH, f'{VENV_BIN_PATH}/django-admin{SCRIPTS_SUFFIX}'),
     'startapp', DEFAULT_FRONTEND_APP_NAME
 ])
 
