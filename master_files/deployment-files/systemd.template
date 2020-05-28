@@ -1,0 +1,13 @@
+Unit]
+Description={{app_name}} app
+
+[Service]
+User=vm
+Group=vm
+WorkingDirectory=/home/{{app_user}}/{{app_dir}}
+ExecStart=/home/{{app_user}}/gunicorn_start
+Restart=always
+RestartSec=0
+
+[Install]
+WantedBy=multi-user.target
