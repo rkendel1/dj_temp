@@ -1,12 +1,9 @@
-#!./venv/bin/python
-# -*- coding: utf-8 -*-
 import argparse
 from importlib import import_module
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("template", help="template type")
-    parser.add_argument("-d", "--deployment-files", help="make deployment files", action="count")
 
     args = parser.parse_args()
     import_module(args.template)

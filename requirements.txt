@@ -1,1 +1,10 @@
-chevron==0.13.1
+bcrypt==3.1.7
+cffi==1.14.0
+cryptography==2.9.2
+invoke==1.4.1
+MarkupSafe==1.1.1
+paramiko==2.7.1
+pycparser==2.20
+PyNaCl==1.4.0
+PyYAML==5.3.1
+six==1.15.0

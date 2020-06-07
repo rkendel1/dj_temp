@@ -4,12 +4,13 @@ import platform
 from shutil import copyfile, copytree
 import subprocess
 from utils import edit_django_settings, edit_packagejson
+import master_files
 
 MASTER_FILES_PATH = os.path.join(
-    os.path.dirname(os.path.realpath(__file__)),
-    'master_files',
+    os.path.dirname(master_files.__file__),
     'react'
 )
+
 PROJECT_NAME = input('Project name: ')
 VENV_NAME = 'venv'
 REQUIREMENTS_FILE = 'requirements.txt'

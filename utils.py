@@ -1,5 +1,6 @@
 import fileinput
-
+import os
+import secrets
 
 def handle_installed_apps(filepath, settings_dict):
     with fileinput.input(filepath, inplace=True) as f:
@@ -70,3 +71,13 @@ def edit_packagejson(filepath, settings_dict):
             if is_scripts and '}' in line:
                 is_scripts = False
             print(line, end='')
+
+
+def get_postgresql_url(**kwargs):
+    return f'postgres://{kwargs["username"]}:{kwargs["password"]}@{kwargs["address"]}:{kwargs["port"]}/{kwargs["name"]}'
+
+def get_sqlite_url(path):
+    return f'sqlite:///{path}.db'
+
+def get_django_secret_key():
+    return secrets.token_urlsafe(50)
