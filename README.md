@@ -13,7 +13,7 @@ Simple Django scripts useful for bootstraping django applications.
 
 ## How to use
 - create virtual env at project root level: "virtualenv venv"
-- activate virtuanenv
+- activate virtualnenv
 - install packages "pip install -r requirements.txt"
 - run either "python react.py" or "djangotemplate react"
 - the script will ask you for the project name and will create it in your current working directory
